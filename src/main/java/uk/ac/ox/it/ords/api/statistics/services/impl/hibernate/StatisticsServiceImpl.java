@@ -17,7 +17,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 
 import uk.ac.ox.it.ords.api.statistics.configuration.AuthenticationDetails;
-import uk.ac.ox.it.ords.api.statistics.configuration.servers.Server;
 import uk.ac.ox.it.ords.api.statistics.model.OrdsStatistics;
 import uk.ac.ox.it.ords.api.statistics.services.MessagingService;
 import uk.ac.ox.it.ords.api.statistics.services.ServerConfigurationService;
@@ -141,8 +140,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         int numberOfRecords = 0;
 
         // Let's now find a server to use
-        for (Server server : ServerConfigurationService.Factory.getInstance().getServers()) {
-            numberOfRecords += getNumberOfRecordsForServer(server.getName());
+        for (String server : ServerConfigurationService.Factory.getInstance().getServers()) {
+            numberOfRecords += getNumberOfRecordsForServer(server);
         }
         OrdsStatistics stats = new OrdsStatistics();
         stats.setNumberOfRecordsManagedByOrds(numberOfRecords);

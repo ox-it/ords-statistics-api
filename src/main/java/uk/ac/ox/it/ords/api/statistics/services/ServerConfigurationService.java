@@ -3,17 +3,12 @@ package uk.ac.ox.it.ords.api.statistics.services;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import uk.ac.ox.it.ords.api.statistics.configuration.servers.OrdsServerConfig;
-import uk.ac.ox.it.ords.api.statistics.configuration.servers.Server;
 import uk.ac.ox.it.ords.api.statistics.services.impl.ServerConfigurationServiceImpl;
 
 public interface ServerConfigurationService {
 
-	
-	public List<Server> getServers() throws Exception;
-	
-	public OrdsServerConfig getServerConfiguration() throws Exception;
-	
+	public List<String> getServers() throws Exception;
+		
 	/**
 	 * Factory for obtaining implementations
 	 */
