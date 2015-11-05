@@ -1,0 +1,4 @@
+<configuration>
+	<databasePropertiesLocation>/etc/ordsConfig/db.properties</databasePropertiesLocation>
+	<serverConfigurationLocation>/etc/ordsConfig/serverConfig.xml</serverConfigurationLocation>
+</configuration>
