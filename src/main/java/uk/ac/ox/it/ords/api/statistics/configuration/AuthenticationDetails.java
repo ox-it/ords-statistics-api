@@ -2,7 +2,6 @@ package uk.ac.ox.it.ords.api.statistics.configuration;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,22 +19,12 @@ public class AuthenticationDetails {
 	public AuthenticationDetails() {
 
 		String dbConfigurationLocation = DEFAULT_DATABASE_CONFIG_LOCATION;
-		try {
-
-			//
-			// Load the meta-configuration file
-			//
-			XMLConfiguration config = new XMLConfiguration("config.xml");
-			dbConfigurationLocation = config.getString("databasePropertiesLocation");
-			if (dbConfigurationLocation == null){
-				log.warn("No server configuration location set; using defaults");
-				dbConfigurationLocation = DEFAULT_DATABASE_CONFIG_LOCATION;
-			}
-		} catch (Exception e) {
+		dbConfigurationLocation = MetaConfiguration.getConfigurationLocation("databasePropertiesLocation");
+		if (dbConfigurationLocation == null){
 			log.warn("No server configuration location set; using defaults");
 			dbConfigurationLocation = DEFAULT_DATABASE_CONFIG_LOCATION;
 		}
-		
+
 		try {
 
 			//
