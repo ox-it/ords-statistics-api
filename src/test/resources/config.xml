@@ -1,0 +1,5 @@
+<configuration>
+	<databasePropertiesLocation>db.properties</databasePropertiesLocation>
+	<serverConfigurationLocation>serverConfig.xml</serverConfigurationLocation>
+	<emailConfiguration>mail.properties</emailConfiguration>
+</configuration>
