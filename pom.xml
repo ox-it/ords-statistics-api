@@ -5,7 +5,7 @@
 	<artifactId>ords-statistics-api</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>StatisticsAPI Maven Webapp</name>
+	<name>ords-statistics-api</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -78,6 +78,11 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
 		</dependency>
 		
 		<!-- Configuration -->
