@@ -25,8 +25,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.ConfigurationConverter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,38 +49,8 @@ public class SendMailTLS  implements MessagingService {
     private String email;
     private boolean sendEmails = true;
 
-    public SendMailTLS() {
-    	
-        props = new Properties();
-    	
-    	try {
-			PropertiesConfiguration properties = new PropertiesConfiguration(MetaConfiguration.getConfigurationLocation("emailConfiguration"));
-			props.put("mail.smtp.auth", properties.getString("mail.smtp.auth"));
-			props.put("mail.smtp.starttls.enable", properties.getString("mail.smtp.starttls.enable"));
-			props.put("mail.smtp.host", properties.getString("mail.smtp.host"));
-			props.put("mail.smtp.port", properties.getString("mail.smtp.port"));
-			props.put("mail.smtp.from", properties.getString("mail.smtp.from"));
-			props.put("mail.smtp.to", properties.getString("mail.smtp.to"));
-			props.put("mail.smtp.subject", properties.getString("mail.subject"));
-			props.put("mail.smtp.username", properties.getString("mail.username"));
-
-    	} catch (ConfigurationException e) {
-			log.error("Error reading Mail properties file; using hard-coded defaults instead");
-			
-	        props.put("mail.smtp.auth", "false");//true");
-	        props.put("mail.smtp.starttls.enable", "false");//true");
-	        props.put("mail.smtp.host", "localhost");//smtp.gmail.com");
-	        props.put("mail.smtp.port", "25");//587");
-	        props.put("mail.smtp.from", "daemons@sysdev.oucs.ox.ac.uk");
-			props.put("mail.smtp.to", "ords@it.ox.ac.uk");
-			props.put("mail.smtp.subject", "Statistics Information from ORDS");
-			props.put("mail.smtp.username", "ords");
-
-		}
-
-        //setupCredentials();
-    	
-        this.sendEmails = true;
+    public SendMailTLS() {    	
+		props = ConfigurationConverter.getProperties(MetaConfiguration.getConfiguration());
     }
 
 	@Override
@@ -119,6 +89,7 @@ public class SendMailTLS  implements MessagingService {
                 message.setFrom(new InternetAddress("ords@it.ox.ac.uk"));
 
                 Transport.send(message);
+                
                 
                 if (log.isDebugEnabled()) {
                     log.debug(String.format("Sent email to %s (name %s)", email, username));
