@@ -1,5 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
 <configuration>
-	<databasePropertiesLocation>db.properties</databasePropertiesLocation>
-	<serverConfigurationLocation>serverConfig.xml</serverConfigurationLocation>
-	<emailConfiguration>mail.properties</emailConfiguration>
+
+	<!-- Allow environment variables to override file-based defaults -->
+   <system/>
+  
+  	<!--
+		This is the main properties
+	-->
+   <properties fileName="statistics.properties"/>
+
 </configuration>
