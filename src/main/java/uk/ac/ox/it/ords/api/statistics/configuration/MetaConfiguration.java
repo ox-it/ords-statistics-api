@@ -15,7 +15,8 @@
  */
 package uk.ac.ox.it.ords.api.statistics.configuration;
 
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,32 +27,25 @@ public class MetaConfiguration {
 
 	public static Logger log = LoggerFactory.getLogger(MetaConfiguration.class);
 
-	private static XMLConfiguration config;
+	private static Configuration config;
 	
 	/**
 	 * Load meta-configuration
 	 */
     private static void load(){
 		try {
-			config = new XMLConfiguration("config.xml");
+			DefaultConfigurationBuilder factory = new DefaultConfigurationBuilder("config.xml");
+			factory.load();
+			config = factory.getConfiguration();
 		} catch (Exception e) {
 			config = null;
+			e.printStackTrace();
 			log.warn("No server configuration location set; using defaults");
 		}
 	}
-
-    /**
-     * Get the specified configuration
-     * @param identifier
-     * @return the configuration, or Null if there is no match
-     */
-	public static String getConfigurationLocation(String identifier){
-		if (config == null) load();
-		String location = config.getString(identifier);
-		if (location == null){
-			log.warn("No configuration location set for "+identifier+"; using defaults");
-		}
-		return location;
-	}
-
+    
+    public static Configuration getConfiguration(){
+    	if (config == null) load();
+    	return config;
+    }
 }
