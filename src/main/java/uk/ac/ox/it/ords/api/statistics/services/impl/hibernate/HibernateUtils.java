@@ -37,7 +37,7 @@ public class HibernateUtils
 		try
 		{
 			Configuration configuration;
-			String hibernateConfigLocation = MetaConfiguration.getConfigurationLocation("hibernate");
+			String hibernateConfigLocation = MetaConfiguration.getConfiguration().getString("hibernate.configuration");
 			if (hibernateConfigLocation == null){
 				configuration = new Configuration().configure();
 			} else {
