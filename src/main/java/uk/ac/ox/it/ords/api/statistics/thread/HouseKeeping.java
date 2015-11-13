@@ -18,6 +18,9 @@ package uk.ac.ox.it.ords.api.statistics.thread;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,9 @@ import uk.ac.ox.it.ords.api.statistics.services.StatisticsService;
 /**
  * From the original Housekeeping class - thread that loads stats daily
  */
-public class HouseKeeping extends Thread {
+public class HouseKeeping extends Thread implements ServletContextListener  {
+	
+	private HouseKeeping statsGatherer;
 	
     private Logger log = LoggerFactory.getLogger(HouseKeeping.class);
     
@@ -121,5 +126,24 @@ public class HouseKeeping extends Thread {
 
         return after;
     }
+
+
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+        try {
+            statsGatherer.doShutdown();
+            statsGatherer.interrupt();
+        }
+        catch (Exception ex) {
+        	log.error("Exception while shutting down stats gathering thread", ex);
+        }
+	}
+
+
+	@Override
+	public void contextInitialized(ServletContextEvent arg0) {
+        statsGatherer = new HouseKeeping();
+        statsGatherer.start();
+	}
     
 }

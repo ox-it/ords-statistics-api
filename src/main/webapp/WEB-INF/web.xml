@@ -26,6 +26,10 @@ com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+	<listener>
+		<listener-class>uk.ac.ox.it.ords.api.statistics.thread.HouseKeeping</listener-class>
+	</listener>
+	
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/*</url-pattern>
