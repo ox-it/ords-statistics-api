@@ -15,6 +15,8 @@
  */
 package uk.ac.ox.it.ords.api.statistics.configuration;
 
+import java.io.File;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.slf4j.Logger;
@@ -29,12 +31,22 @@ public class MetaConfiguration {
 
 	private static Configuration config;
 	
+	private static final String ORDS_CONFIG_FILENAME = "config.xml";
+	
 	/**
 	 * Load meta-configuration
 	 */
     private static void load(){
 		try {
-			DefaultConfigurationBuilder factory = new DefaultConfigurationBuilder("config.xml");
+			String ordsConfigurationLocation = "";
+			final String ORDS_CONF_DIR = System.getenv("ORDS_CONF_DIR");
+			if (ORDS_CONF_DIR != null){
+				ordsConfigurationLocation = ORDS_CONF_DIR + File.separator + ORDS_CONFIG_FILENAME;
+			} else {
+				ordsConfigurationLocation = ORDS_CONFIG_FILENAME;
+			}
+			
+			DefaultConfigurationBuilder factory = new DefaultConfigurationBuilder(ordsConfigurationLocation);
 			factory.load();
 			config = factory.getConfiguration();
 		} catch (Exception e) {
