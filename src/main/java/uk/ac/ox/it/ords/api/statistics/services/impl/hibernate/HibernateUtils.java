@@ -15,6 +15,8 @@
  */
 package uk.ac.ox.it.ords.api.statistics.services.impl.hibernate;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
@@ -24,6 +26,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
 import uk.ac.ox.it.ords.api.statistics.configuration.MetaConfiguration;
+import uk.ac.ox.it.ords.api.statistics.model.OrdsStatistics;
 
 public class HibernateUtils
 {
@@ -32,27 +35,45 @@ public class HibernateUtils
 	private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
 	
-	private static void init()
+	protected static String HIBERNATE_CONFIGURATION_PROPERTY = "ords.hibernate.configuration";
+	
+	protected static Configuration configuration;
+	
+	/**
+	 * Add the class mappings for this module
+	 */
+	protected static void addMappings(){
+		configuration.addAnnotatedClass(OrdsStatistics.class);
+	}
+	
+	protected static void init()
 	{
 		try
 		{
-			Configuration configuration;
-			String hibernateConfigLocation = MetaConfiguration.getConfiguration().getString("hibernate.configuration");
+			String hibernateConfigLocation = MetaConfiguration.getConfiguration().getString(HIBERNATE_CONFIGURATION_PROPERTY);			
 			if (hibernateConfigLocation == null){
+				log.warn("No hibernate configuration found; using default hibernate.cfg.xml");
 				configuration = new Configuration().configure();
 			} else {
-				configuration = new Configuration().configure(hibernateConfigLocation);
+				log.info("Hibernate configuration found; using configuration from "+hibernateConfigLocation);
+				configuration = new Configuration().configure(new File(hibernateConfigLocation));
 			}
+			
+			//
+			// Add class mappings. Note we do this programmatically as this is
+			// completely independent of the database configuration.
+			//
+			addMappings();
+			
 			serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		}
 		catch (HibernateException he)
 		{
-			log.error("Error creating Session: " + he);
 			throw new ExceptionInInitializerError(he);
 		}
 	}
-
+	
 	public static SessionFactory getSessionFactory()
 	{
 		if (sessionFactory == null) init();
