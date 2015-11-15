@@ -134,6 +134,7 @@
 	</dependencies>
 	
 	<build>
+		<finalName>api#1.0#statistics</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
