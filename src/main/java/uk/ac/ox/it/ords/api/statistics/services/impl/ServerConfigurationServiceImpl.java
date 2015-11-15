@@ -29,7 +29,7 @@ public class ServerConfigurationServiceImpl implements ServerConfigurationServic
 
 	Logger log = LoggerFactory.getLogger(ServerConfigurationServiceImpl.class);
 	
-	public static final String DEFAULT_SERVER_CONFIG_LOCATION = "/etc/ordsConfig/serverConfig.xml";
+	public static final String DEFAULT_SERVER_CONFIG_LOCATION = "serverConfig.xml";
 
 
 	@Override
@@ -42,7 +42,7 @@ public class ServerConfigurationServiceImpl implements ServerConfigurationServic
 			// Load the meta-configuration file
 			//
 			XMLConfiguration config = new XMLConfiguration("config.xml");
-			serverConfigurationLocation = config.getString("serverConfigurationLocation");
+			serverConfigurationLocation = config.getString("ords.server.configuration");
 			if (serverConfigurationLocation == null){
 				log.warn("No server configuration location set; using defaults");
 				serverConfigurationLocation = DEFAULT_SERVER_CONFIG_LOCATION;
