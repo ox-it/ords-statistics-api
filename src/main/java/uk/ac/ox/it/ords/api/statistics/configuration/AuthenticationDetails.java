@@ -22,8 +22,6 @@ public class AuthenticationDetails {
 
 	private static Logger log = LoggerFactory.getLogger(AuthenticationDetails.class);
 
-	public static final String DEFAULT_DATABASE_CONFIG_LOCATION = "/etc/ordsConfig/db.properties";
-
 	private String ordsUser, ordsPassword;
 	private String datasetViewer, datasetViewerPassword;
 	private String rootDbUser, rootDbPassword;
