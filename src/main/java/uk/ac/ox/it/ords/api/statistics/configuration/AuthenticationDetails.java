@@ -21,9 +21,7 @@ import org.slf4j.LoggerFactory;
 public class AuthenticationDetails {
 
 	private static Logger log = LoggerFactory.getLogger(AuthenticationDetails.class);
-
-	private String ordsUser, ordsPassword;
-	private String datasetViewer, datasetViewerPassword;
+	
 	private String rootDbUser, rootDbPassword;
 	private String ordsOdbcUserMasterPassword;
 
@@ -34,22 +32,10 @@ public class AuthenticationDetails {
 		//
 
 		/**
-		 * The user that can connect to and read/write from/to the ords database. Used for hibernate.
-		 */
-		ordsUser = MetaConfiguration.getConfiguration().getString("user");
-		ordsPassword = MetaConfiguration.getConfiguration().getString("password");
-
-		/**
-		 * A read only user used to view public datasets
-		 */
-		datasetViewer = MetaConfiguration.getConfiguration().getString("datasetViewer");
-		datasetViewerPassword = MetaConfiguration.getConfiguration().getString("datasetViewerPassword");
-
-		/**
 		 * A root user on the server that can create databases and set the public schema permissions
 		 */
-		rootDbUser = MetaConfiguration.getConfiguration().getString("rootDbUser");
-		rootDbPassword = MetaConfiguration.getConfiguration().getString("rootDbPassword");
+		rootDbUser = MetaConfiguration.getConfiguration().getString("ords.database.rootdbuser");
+		rootDbPassword = MetaConfiguration.getConfiguration().getString("ords.database.rootdbpassword");
 
 		/**
 		 * When ords accesses data via a user command (e.g. the user logs in to a project and adds rows to a table in a 
@@ -57,27 +43,7 @@ public class AuthenticationDetails {
 		 * the project and performs the update: under the covers, ords will access the database with user fred_ords. 
 		 * ordsOdbcUserMasterPassword provides the password for this access.
 		 */
-		ordsOdbcUserMasterPassword = MetaConfiguration.getConfiguration().getString("ordsOdbcUserMasterPassword");
-		if ((ordsOdbcUserMasterPassword == null) || (ordsOdbcUserMasterPassword.length() == 0) ) {
-			log.error("Unable to get odbc master password - defaulting");
-			ordsOdbcUserMasterPassword = ordsPassword;
-		}
-	}
-
-	public String getDatasetViewer() {
-		return datasetViewer;
-	}
-
-	public String getDatasetViewerPassword() {
-		return datasetViewerPassword;
-	}
-
-	public String getOrdsUser() {
-		return ordsUser;
-	}
-
-	public String getOrdsPassword() {
-		return ordsPassword;
+		 ordsOdbcUserMasterPassword = MetaConfiguration.getConfiguration().getString("ords.odbc.masterpassword");
 	}
 
 	public String getRootDbUser() {
