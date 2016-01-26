@@ -198,7 +198,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	    connectionProps.put("user", ad.getRootDbUser());
 	    connectionProps.put("password", ad.getRootDbPassword());
 	    try {
-			conn = DriverManager.getConnection(url);
+			conn = DriverManager.getConnection(url, connectionProps);
 			//
 			// This is the query used internally by PostgreSQL for the ANALYZE command. Its 
 			// much more up to date than relying on PG_STAT, but also performs better than a
