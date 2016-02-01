@@ -23,6 +23,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.ac.ox.it.ords.api.statistics.configuration.MetaConfiguration;
 import uk.ac.ox.it.ords.api.statistics.services.ServerConfigurationService;
 
 public class ServerConfigurationServiceImpl implements ServerConfigurationService {
@@ -36,13 +37,9 @@ public class ServerConfigurationServiceImpl implements ServerConfigurationServic
 	public List<String> getServers() throws Exception {
 		
 		String serverConfigurationLocation = DEFAULT_SERVER_CONFIG_LOCATION;
-
+		
 		try {
-			//
-			// Load the meta-configuration file
-			//
-			XMLConfiguration config = new XMLConfiguration("config.xml");
-			serverConfigurationLocation = config.getString("ords.server.configuration");
+			serverConfigurationLocation = MetaConfiguration.getConfiguration().getString("ords.server.configuration");
 			if (serverConfigurationLocation == null){
 				log.warn("No server configuration location set; using defaults");
 				serverConfigurationLocation = DEFAULT_SERVER_CONFIG_LOCATION;

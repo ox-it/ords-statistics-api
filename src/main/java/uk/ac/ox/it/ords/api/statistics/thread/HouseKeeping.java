@@ -142,8 +142,10 @@ public class HouseKeeping extends Thread implements ServletContextListener  {
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-        statsGatherer = new HouseKeeping();
-        statsGatherer.start();
+		if (statsGatherer == null || !statsGatherer.isAlive()){
+			statsGatherer = new HouseKeeping();
+			statsGatherer.start();
+		}
 	}
     
 }

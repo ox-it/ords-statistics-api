@@ -42,7 +42,6 @@ public class SendMailTLS  implements MessagingService {
     private Logger log = LoggerFactory.getLogger(SendMailTLS.class);
     
     private String username;
-    private String password;
     private Properties props;
     private String messageText;
     private String subject;
@@ -76,7 +75,7 @@ public class SendMailTLS  implements MessagingService {
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
+        				return new PasswordAuthentication(props.get("mail.smtp.username").toString(), props.get("mail.smtp.password").toString());
                     }
                 });
 
