@@ -124,6 +124,13 @@
 			<version>1.2.17</version>
 		</dependency>
 		
+		<!-- Security -->
+		<dependency>
+			<groupId>uk.ac.ox.it.ords</groupId>
+			<artifactId>ords-security-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- TESTS -->
 		<dependency>
 			<groupId>junit</groupId>
