@@ -10,10 +10,10 @@ The API consists only of GET /api/1.0/statistics.
 
 ### Database (JDBC) configuration
 
-   ords.database.rootdbuser=ords
-   ords.database.rootdbpassword=ords
-   ords.odbc.masterpassword=ords
-   postgresConnectorFile=postgresql-8.4-702.jdbc4.jar
+    ords.database.rootdbuser=ords
+    ords.database.rootdbpassword=ords
+    ords.odbc.masterpassword=ords
+    postgresConnectorFile=postgresql-8.4-702.jdbc4.jar
 
 ### Hibernate  and security configuration
 
