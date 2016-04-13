@@ -2,6 +2,8 @@
 
 The statistics API for the Online Research Database Service (ORDS)
 
+![build status image](https://travis-ci.org/ox-it/ords-statistics-api.svg?branch=master) [![Download](https://api.bintray.com/packages/scottbw/ords/ords-statistics-api/images/download.svg) ](https://bintray.com/scottbw/ords/ords-statistics-api/_latestVersion)
+
 ## REST API Documentation
 
 The API consists only of GET /api/1.0/statistics.
