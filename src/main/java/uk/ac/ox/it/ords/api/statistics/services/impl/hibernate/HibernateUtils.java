@@ -27,6 +27,8 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 import uk.ac.ox.it.ords.api.statistics.configuration.MetaConfiguration;
 import uk.ac.ox.it.ords.api.statistics.model.OrdsStatistics;
+import uk.ac.ox.it.ords.security.model.DatabaseServer;
+import uk.ac.ox.it.ords.security.services.ServerConfigurationService;
 
 public class HibernateUtils
 {
@@ -60,6 +62,14 @@ public class HibernateUtils
 			}
 			
 			//
+			// Add server connection details
+			//
+			DatabaseServer databaseServer = ServerConfigurationService.Factory.getInstance().getOrdsDatabaseServer();
+			configuration.setProperty("hibernate.connection.url", databaseServer.getUrl());
+			configuration.setProperty("hibernate.connection.username", databaseServer.getUsername());
+			configuration.setProperty("hibernate.connection.password", databaseServer.getPassword());
+			
+			//
 			// Add class mappings. Note we do this programmatically as this is
 			// completely independent of the database configuration.
 			//
@@ -68,7 +78,7 @@ public class HibernateUtils
 			serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		}
-		catch (HibernateException he)
+		catch (Exception he)
 		{
 			throw new ExceptionInInitializerError(he);
 		}

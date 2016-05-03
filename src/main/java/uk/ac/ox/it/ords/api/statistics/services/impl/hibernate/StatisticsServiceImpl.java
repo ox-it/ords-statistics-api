@@ -30,11 +30,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 
-import uk.ac.ox.it.ords.api.statistics.configuration.AuthenticationDetails;
 import uk.ac.ox.it.ords.api.statistics.model.OrdsStatistics;
 import uk.ac.ox.it.ords.api.statistics.services.MessagingService;
-import uk.ac.ox.it.ords.api.statistics.services.ServerConfigurationService;
 import uk.ac.ox.it.ords.api.statistics.services.StatisticsService;
+import uk.ac.ox.it.ords.security.model.DatabaseServer;
+import uk.ac.ox.it.ords.security.services.ServerConfigurationService;
 
 public class StatisticsServiceImpl implements StatisticsService {
 
@@ -154,7 +154,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         int numberOfRecords = 0;
 
         // Let's now find a server to use
-        for (String server : ServerConfigurationService.Factory.getInstance().getServers()) {
+        for (DatabaseServer server : ServerConfigurationService.Factory.getInstance().getAllDatabaseServers()) {
             numberOfRecords += getNumberOfRecordsForServer(server);
         }
         OrdsStatistics stats = new OrdsStatistics();
@@ -169,7 +169,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.debug("computeLatestStats:return");
     }
     
-    public int getNumberOfRecordsForServer(String server) throws Exception {
+    public int getNumberOfRecordsForServer(DatabaseServer server) throws Exception {
 	   	Long numberOfRecords = 0L;
 	
 	   	//
@@ -187,22 +187,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return numberOfRecords.intValue();
 	}
 	
-	private int getRecordCountForDatabase(String server, String database) throws Exception{
+	private int getRecordCountForDatabase(DatabaseServer server, String database) throws Exception{
 		int numberOfRecords = 0;
 
-		AuthenticationDetails ad = new AuthenticationDetails();
-    	String url = "jdbc:postgresql://" + server + "/" + database;    	
+    	String url = server.getUrl(database);    	
     	
 		Connection conn = null;
 	    Properties connectionProps = new Properties();
-	    connectionProps.put("user", ad.getRootDbUser());
-	    connectionProps.put("password", ad.getRootDbPassword());
+	    connectionProps.put("user", server.getUsername());
+	    connectionProps.put("password", server.getPassword());
 	    try {
 			conn = DriverManager.getConnection(url, connectionProps);
 			//
 			// This is the query used internally by PostgreSQL for the ANALYZE command. Its 
 			// much more up to date than relying on PG_STAT, but also performs better than a
-			// SELECT on rach table.
+			// SELECT on each table.
 			//
 			ResultSet rs = conn.prepareStatement("SELECT SUM(c.reltuples) FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN ('pg_catalog', 'information_schema') AND relkind='r';").executeQuery();
 			rs.next();
@@ -217,7 +216,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	
 	@SuppressWarnings("unchecked")
-	private List<String> getDatabases(String server) {
+	private List<String> getDatabases(DatabaseServer server) {
 		List<String> databases = null;
 		Session session = sessionFactory.getCurrentSession();
 	
